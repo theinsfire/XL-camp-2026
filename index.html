@@ -1,0 +1,555 @@
+<title>XL Camp 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600;700;800&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
+<style>
+  /*
+    Layout concept: a single vertical scroll built like the event poster itself —
+    a dark maroon "stage" that opens and closes the page (hero, register), with a
+    warm paper-cream gallery in between for the speakers and the day's schedule.
+    Committed single visual world (poster-brand), so colors are set explicitly
+    rather than adapted to the viewer's light/dark preference.
+  */
+  :root{
+    --maroon-deep:   #1B070C;
+    --maroon:        #7A1424;
+    --maroon-raise:  #93192C;
+    --cream:         #FBF4E8;
+    --cream-dim:     #F1E4D0;
+    --ink:           #241012;
+    --ink-soft:      #5B4440;
+    --gold:          #D9A441;
+    --gold-soft:     #EAC36F;
+    --ember:         #C23B4B;
+    --line-on-dark:  rgba(251,244,232,0.16);
+    --line-on-light: rgba(36,16,18,0.12);
+    color-scheme: dark;
+    --bg: var(--maroon-deep);
+    --fg: var(--cream);
+  }
+
+  *{ box-sizing:border-box; }
+  body{
+    background: var(--bg);
+    color: var(--fg);
+    margin:0;
+    font-family:"Work Sans", "Segoe UI", Arial, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{ max-width:100%; display:block; }
+  h1,h2,h3{ text-wrap:balance; margin:0; }
+  a{ color:inherit; }
+  .container{
+    max-width:1080px;
+    margin:0 auto;
+    padding-inline:24px;
+  }
+  .eyebrow{
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+  }
+  .script{
+    font-family:"Mrs Saint Delafield", cursive;
+    font-weight:400;
+    line-height:1;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding:16px 34px;
+    border-radius:999px;
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    text-decoration:none;
+    border:none;
+    cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn:focus-visible{ outline:3px solid var(--gold-soft); outline-offset:3px; }
+  .btn-gold{
+    background:var(--gold);
+    color:var(--maroon-deep);
+    box-shadow:0 10px 24px rgba(217,164,65,0.28);
+  }
+  .btn-outline{
+    background:transparent;
+    color:var(--cream);
+    border:1.5px solid var(--line-on-dark);
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    background:
+      radial-gradient(ellipse 620px 420px at 14% -8%, rgba(194,59,75,0.35), transparent 60%),
+      radial-gradient(ellipse 680px 520px at 102% 18%, rgba(217,164,65,0.16), transparent 55%),
+      linear-gradient(180deg, var(--maroon-deep) 0%, var(--maroon) 72%, var(--maroon-raise) 100%);
+    padding-block:56px 64px;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      repeating-linear-gradient(115deg, rgba(251,244,232,0.035) 0 2px, transparent 2px 46px);
+    pointer-events:none;
+  }
+  .hero-inner{ position:relative; z-index:1; }
+  .org-line{
+    display:flex; align-items:center; gap:10px;
+    color:var(--gold-soft);
+    margin-bottom:28px;
+  }
+  .org-line .bar{ width:22px; height:2px; background:var(--gold-soft); flex:none; }
+  .logo-wrap{ max-width:360px; margin-bottom:30px; }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:40px;
+    align-items:center;
+  }
+  .hero-kicker{
+    font-family:"Anton", sans-serif;
+    font-size:15px;
+    letter-spacing:.3em;
+    color:var(--gold-soft);
+    margin-bottom:14px;
+  }
+  .hero-title{
+    font-family:"Anton", sans-serif;
+    font-size:clamp(46px, 9vw, 92px);
+    line-height:0.92;
+    color:var(--cream);
+    text-shadow:0 2px 0 rgba(0,0,0,0.25);
+  }
+  .hero-title .accent{ color:var(--gold); }
+  .hero-sub{
+    font-family:"Mrs Saint Delafield", cursive;
+    font-size:clamp(30px,5vw,44px);
+    color:var(--gold-soft);
+    margin-top:4px;
+    margin-bottom:10px;
+  }
+  .hero-tagline{
+    font-size:16px;
+    color:var(--cream-dim);
+    max-width:46ch;
+    line-height:1.55;
+    margin-bottom:28px;
+  }
+  .hero-ctas{ display:flex; flex-wrap:wrap; gap:14px; margin-bottom:30px; }
+  .hero-meta{
+    display:flex; flex-wrap:wrap; gap:10px 28px;
+    font-size:13.5px;
+    color:var(--cream-dim);
+  }
+  .hero-meta span{ display:flex; align-items:center; gap:8px; white-space:nowrap; }
+  .hero-meta b{ color:var(--cream); font-weight:700; }
+  .dot{ width:5px; height:5px; border-radius:50%; background:var(--gold); flex:none; }
+
+  .date-stone{
+    justify-self:end;
+    width:150px; height:150px;
+    border-radius:50%;
+    background:var(--gold);
+    color:var(--maroon-deep);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    box-shadow:0 18px 40px rgba(0,0,0,0.35), inset 0 0 0 6px rgba(27,7,12,0.14);
+    transform:rotate(6deg);
+  }
+  .date-stone .num{ font-family:"Anton",sans-serif; font-size:46px; line-height:1; }
+  .date-stone .mon{ font-family:"Anton",sans-serif; font-size:16px; letter-spacing:.1em; margin-top:2px; }
+  .date-stone .day{ font-size:11.5px; font-weight:700; letter-spacing:.1em; margin-top:4px; }
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section{ padding-block:68px; }
+  .section.on-cream{ background:var(--cream); color:var(--ink); }
+  .section-head{ max-width:640px; margin-bottom:40px; }
+  .section-head .eyebrow{ color:var(--ember); }
+  .on-dark .section-head .eyebrow{ color:var(--gold-soft); }
+  .section-title{
+    font-family:"Anton", sans-serif;
+    font-size:clamp(30px,5vw,44px);
+    margin-top:10px;
+  }
+  .section-desc{
+    margin-top:12px;
+    font-size:15.5px;
+    color:var(--ink-soft);
+    max-width:56ch;
+    line-height:1.6;
+  }
+  .on-dark .section-desc{ color:var(--cream-dim); }
+
+  /* ---------- SPEAKERS ---------- */
+  .speakers-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:28px;
+  }
+  .speaker-card{
+    background:#fff;
+    border-radius:18px;
+    padding:28px 22px 26px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(36,16,18,0.08);
+    border:1px solid var(--line-on-light);
+  }
+  .avatar{
+    width:132px; height:132px;
+    border-radius:50%;
+    margin:0 auto 18px;
+    position:relative;
+    padding:5px;
+    background:conic-gradient(from 210deg, var(--gold), var(--ember), var(--maroon), var(--gold));
+  }
+  .avatar img{
+    width:100%; height:100%;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid var(--cream);
+    display:block;
+  }
+  .avatar::after{
+    content:"";
+    position:absolute; inset:5px;
+    border-radius:50%;
+    box-shadow:inset 0 0 0 3px rgba(251,244,232,0.9);
+    pointer-events:none;
+  }
+  .speaker-role{
+    font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ember);
+    margin-bottom:6px;
+  }
+  .speaker-name{
+    font-family:"Anton", sans-serif;
+    font-size:21px;
+    letter-spacing:.01em;
+  }
+  .speaker-title{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-top:6px;
+    line-height:1.45;
+    min-height:36px;
+  }
+  .speaker-topic{
+    margin-top:14px;
+    padding-top:14px;
+    border-top:1px dashed var(--line-on-light);
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--maroon);
+  }
+  .speaker-topic em{
+    display:block;
+    font-style:normal;
+    font-weight:400;
+    color:var(--ink-soft);
+    font-size:11.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    margin-bottom:4px;
+  }
+
+  /* ---------- SCHEDULE ---------- */
+  .schedule-wrap{
+    background:#fff;
+    border-radius:20px;
+    padding:8px 28px;
+    border:1px solid var(--line-on-light);
+    box-shadow:0 10px 30px rgba(36,16,18,0.06);
+  }
+  .sched-row{
+    display:grid;
+    grid-template-columns:120px 1fr;
+    gap:18px;
+    align-items:center;
+    padding-block:16px;
+    border-bottom:1px solid var(--line-on-light);
+  }
+  .sched-row:last-child{ border-bottom:none; }
+  .sched-time{
+    font-family:"Anton", sans-serif;
+    font-size:15px;
+    color:var(--maroon);
+    font-variant-numeric:tabular-nums;
+    white-space:nowrap;
+  }
+  .sched-activity{ font-size:15px; font-weight:500; }
+  .sched-row.highlight .sched-activity{ font-weight:700; }
+  .sched-row.highlight .sched-time{ color:var(--ember); }
+  .sched-row.highlight{ background:linear-gradient(90deg, rgba(217,164,65,0.08), transparent 70%); margin-inline:-28px; padding-inline:28px; border-radius:10px; }
+
+  /* ---------- REGISTER ---------- */
+  .register{
+    position:relative;
+    background:
+      radial-gradient(ellipse 560px 380px at 90% 0%, rgba(217,164,65,0.18), transparent 55%),
+      linear-gradient(180deg, var(--maroon-raise) 0%, var(--maroon-deep) 100%);
+    overflow:hidden;
+  }
+  .reg-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:48px;
+    align-items:center;
+  }
+  .reg-facts{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-top:28px;
+  }
+  .fact{
+    background:rgba(251,244,232,0.06);
+    border:1px solid var(--line-on-dark);
+    border-radius:14px;
+    padding:16px 18px;
+  }
+  .fact .label{
+    font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--gold-soft);
+    margin-bottom:6px;
+  }
+  .fact .value{ font-size:16.5px; font-weight:700; color:var(--cream); }
+  .fact .value small{ display:block; font-size:12px; font-weight:500; color:var(--cream-dim); margin-top:2px; }
+
+  .reg-card{
+    background:var(--cream);
+    color:var(--ink);
+    border-radius:22px;
+    padding:36px 32px;
+    text-align:center;
+    box-shadow:0 24px 50px rgba(0,0,0,0.35);
+  }
+  .reg-card .reg-eyebrow{ color:var(--ember); }
+  .reg-card h3{
+    font-family:"Anton", sans-serif;
+    font-size:26px;
+    margin-top:10px;
+  }
+  .reg-card p{ font-size:14px; color:var(--ink-soft); margin-top:10px; line-height:1.55; }
+  .reg-card .btn-gold{ width:100%; margin-top:20px; padding-block:17px; }
+  .reg-fee{
+    margin-top:22px;
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    font-size:13px; color:var(--ink-soft);
+  }
+  .reg-fee b{ font-size:22px; font-family:"Anton", sans-serif; color:var(--maroon); }
+
+  .contact-row{
+    margin-top:28px;
+    display:flex; flex-wrap:wrap; gap:14px;
+    font-size:13.5px;
+    color:var(--cream-dim);
+  }
+  .contact-pill{
+    display:flex; align-items:center; gap:8px;
+    border:1px solid var(--line-on-dark);
+    border-radius:999px;
+    padding:9px 16px;
+  }
+  .contact-pill b{ color:var(--cream); font-weight:700; }
+  .copy-btn{
+    background:none; border:none; color:var(--gold-soft); cursor:pointer;
+    font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.06em;
+    padding:0; font-family:inherit;
+  }
+  .copy-btn:focus-visible{ outline:2px solid var(--gold-soft); outline-offset:2px; }
+
+  /* ---------- FOOTER ---------- */
+  .footer{
+    padding-block:36px;
+    text-align:center;
+    border-top:1px solid var(--line-on-dark);
+    background:var(--maroon-deep);
+  }
+  .footer .logo-small{ width:150px; margin:0 auto 14px; opacity:.92; }
+  .footer p{ font-size:12.5px; color:var(--cream-dim); line-height:1.7; margin:0; }
+  .footer .verse{
+    font-family:"Mrs Saint Delafield", cursive;
+    font-size:24px;
+    color:var(--gold-soft);
+    margin-bottom:10px;
+  }
+
+  @media (max-width:760px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .date-stone{ justify-self:start; margin-top:8px; }
+    .speakers-grid{ grid-template-columns:1fr; }
+    .reg-grid{ grid-template-columns:1fr; }
+    .reg-facts{ grid-template-columns:1fr 1fr; }
+    .sched-row{ grid-template-columns:92px 1fr; }
+    .section{ padding-block:52px; }
+  }
+  @media (max-width:420px){
+    .reg-facts{ grid-template-columns:1fr; }
+  }
+</style>
+
+<!-- ========== HERO ========== -->
+<header class="hero">
+  <div class="container hero-inner">
+    <div class="org-line">
+      <span class="bar"></span>
+      <span class="eyebrow">Full Gospel Business Men's Fellowship (Sabah)</span>
+    </div>
+    <img class="logo-wrap" src="assets/xalt_light_hero.png" alt="XALT LIGHT">
+
+    <div class="hero-grid">
+      <div>
+        <div class="hero-kicker">XL CAMP 2026</div>
+        <h1 class="hero-title">REDEMPTION</h1>
+        <div class="hero-sub">Restored by grace, renewed for purpose</div>
+        <p class="hero-tagline">A one-day gathering for Sabah's young adults &mdash; especially the KDMR indigenous community &mdash; to wrestle with real questions of faith, identity and work, and leave equipped for what's next.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-gold" href="https://docs.google.com/forms/d/e/1FAIpQLSfdVsEyqLqTMAC_-PyRqDcUr04OuZzK8z84MyxNcXx2nMsbSA/viewform">Register Now</a>
+          <a class="btn btn-outline" href="#speakers">See Speakers</a>
+        </div>
+        <div class="hero-meta">
+          <span><i class="dot"></i> <b>17 Oct 2026</b>, Saturday</span>
+          <span><i class="dot"></i> Kionsom Baptist Retreat Centre, Inanam</span>
+          <span><i class="dot"></i> Limited to <b>50 pax</b></span>
+        </div>
+      </div>
+      <div class="date-stone" aria-hidden="true">
+        <div class="num">17</div>
+        <div class="mon">OCT</div>
+        <div class="day">SATURDAY</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ========== SPEAKERS ========== -->
+<section class="section on-cream" id="speakers">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Who's Speaking</div>
+      <h2 class="section-title">Voices for Sabah's Next Chapter</h2>
+      <p class="section-desc">Three leaders from the marketplace, business and the church, each bringing a different piece of what Redemption looks like for this generation.</p>
+    </div>
+
+    <div class="speakers-grid">
+      <article class="speaker-card">
+        <div class="avatar"><img src="assets/petrus.jpg" alt="Datuk Petrus Gimbad"></div>
+        <div class="speaker-role">Keynote Speaker</div>
+        <div class="speaker-name">Datuk Petrus Gimbad</div>
+        <div class="speaker-title">Former EY Partner &amp;<br>Strategic Corporate Advisor</div>
+        <div class="speaker-topic"><em>Session Topic</em>Building Sabah's Future Economy</div>
+      </article>
+
+      <article class="speaker-card">
+        <div class="avatar"><img src="assets/peter.jpg" alt="Peter Liew"></div>
+        <div class="speaker-role">Featured Speaker</div>
+        <div class="speaker-name">Peter Liew</div>
+        <div class="speaker-title">Sabah Director,<br>Full Gospel Businessmen</div>
+        <div class="speaker-topic"><em>Session Topic</em>Casting Vision for 2027</div>
+      </article>
+
+      <article class="speaker-card">
+        <div class="avatar"><img src="assets/daniel.jpg" alt="Pastor Daniel Chin"></div>
+        <div class="speaker-role">Featured Speaker</div>
+        <div class="speaker-name">Pastor Daniel Chin</div>
+        <div class="speaker-title">Chairman, Christian Organizations<br>Sabah Alliance</div>
+        <div class="speaker-topic"><em>Session Topic</em>Anak Sulung and The Destiny of Sabah</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SCHEDULE ========== -->
+<section class="section on-cream" id="schedule" style="padding-top:0;">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Tentative Run of Day</div>
+      <h2 class="section-title">17 October, Start to Finish</h2>
+      <p class="section-desc">Doors open early. Bring an open heart &mdash; breakfast and lunch are on us.</p>
+    </div>
+
+    <div class="schedule-wrap">
+      <div class="sched-row"><div class="sched-time">8:00 AM</div><div class="sched-activity">Registration</div></div>
+      <div class="sched-row"><div class="sched-time">9:00 AM</div><div class="sched-activity">Welcome &amp; Icebreaker</div></div>
+      <div class="sched-row"><div class="sched-time">9:15 AM</div><div class="sched-activity">Praise and Worship</div></div>
+      <div class="sched-row highlight"><div class="sched-time">9:30 AM</div><div class="sched-activity">Session 1</div></div>
+      <div class="sched-row"><div class="sched-time">11:00 AM</div><div class="sched-activity">Breakout Session</div></div>
+      <div class="sched-row"><div class="sched-time">11:30 AM</div><div class="sched-activity">Lunch</div></div>
+      <div class="sched-row highlight"><div class="sched-time">12:30 PM</div><div class="sched-activity">Session 2</div></div>
+      <div class="sched-row"><div class="sched-time">2:00 PM</div><div class="sched-activity">Breakout Session</div></div>
+      <div class="sched-row highlight"><div class="sched-time">2:15 PM</div><div class="sched-activity">Session 3</div></div>
+      <div class="sched-row"><div class="sched-time">3:45 PM</div><div class="sched-activity">Breakout Session</div></div>
+      <div class="sched-row"><div class="sched-time">4:00 PM</div><div class="sched-activity">Commissioning Prayer</div></div>
+      <div class="sched-row"><div class="sched-time">4:05 PM</div><div class="sched-activity">Announcements</div></div>
+      <div class="sched-row"><div class="sched-time">4:10 PM</div><div class="sched-activity">Group Photo</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== REGISTER ========== -->
+<section class="section register on-dark" id="register">
+  <div class="container reg-grid">
+    <div>
+      <div class="eyebrow" style="color:var(--gold-soft);">Join Us</div>
+      <h2 class="section-title">Your Story Isn't Over.<br>God Is Still Writing It.</h2>
+      <p class="section-desc">Organised by Full Gospel Business Men's Fellowship (Sabah) &mdash; a non-denominational marketplace ministry reaching Sabah since 1979. Women are warmly welcomed as FGB Ladies of the Fellowship.</p>
+
+      <div class="reg-facts">
+        <div class="fact"><div class="label">Date</div><div class="value">17 Oct 2026<small>Saturday</small></div></div>
+        <div class="fact"><div class="label">Venue</div><div class="value">Kionsom Baptist<small>Retreat Centre, Inanam</small></div></div>
+        <div class="fact"><div class="label">Capacity</div><div class="value">50 pax only<small>First come, first served</small></div></div>
+        <div class="fact"><div class="label">Includes</div><div class="value">Breakfast &amp; Lunch<small>Provided on the day</small></div></div>
+      </div>
+
+      <div class="contact-row">
+        <span class="contact-pill">Rexmond &nbsp;<b id="num1">014-952 3905</b> <button class="copy-btn" data-copy="0149523905" aria-label="Copy Rexmond's number">Copy</button></span>
+        <span class="contact-pill">Vexter &nbsp;<b id="num2">019-539 4591</b> <button class="copy-btn" data-copy="0195394591" aria-label="Copy Vexter's number">Copy</button></span>
+      </div>
+    </div>
+
+    <div class="reg-card">
+      <div class="eyebrow reg-eyebrow">Limited to 50 Participants</div>
+      <h3>Reserve Your Spot</h3>
+      <p>Secure your place before seats run out. Registration takes less than two minutes.</p>
+      <a class="btn btn-gold" href="https://docs.google.com/forms/d/e/1FAIpQLSfdVsEyqLqTMAC_-PyRqDcUr04OuZzK8z84MyxNcXx2nMsbSA/viewform">Register for XL Camp</a>
+      <div class="reg-fee">Registration fee &nbsp;<b>RM35</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <div class="container">
+    <div class="verse">"Be Equipped. Be Inspired. Be the Difference."</div>
+    <img class="logo-small" src="assets/xalt_light_hero.png" alt="XALT LIGHT">
+    <p>XL Camp 2026 is organised by Full Gospel Business Men's Fellowship (Sabah).<br>&copy; 2026 FGB Sabah. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  document.querySelectorAll('.copy-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var text = btn.getAttribute('data-copy');
+      var original = btn.textContent;
+      function done(ok){
+        btn.textContent = ok ? 'Copied' : 'Select & copy';
+        setTimeout(function(){ btn.textContent = original; }, 1600);
+      }
+      try{
+        navigator.clipboard.writeText(text).then(function(){ done(true); }, function(){ done(false); });
+      }catch(e){ done(false); }
+    });
+  });
+})();
+</script>
